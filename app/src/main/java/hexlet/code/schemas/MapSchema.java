@@ -27,10 +27,8 @@ public final class MapSchema implements BaseSchema<Map<String, String>> {
             result = value.keySet()
                           .stream()
                           .allMatch(k -> {
-                                      if (!schemas.containsKey(k)) {
-                                          return true;
-                                      }
-                                      return schemas.get(k).isValid(value.get(k));
+                              if (!schemas.containsKey(k)) { return true; }
+                                return schemas.get(k).isValid(value.get(k));
                           });
         }
         return result;
