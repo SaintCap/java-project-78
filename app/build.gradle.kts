@@ -29,6 +29,7 @@ tasks.jacocoTestReport {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
+        vendor = JvmVendorSpec.AZUL
     }
 }
 
