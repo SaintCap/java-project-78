@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.schemas.NumberSchema;
+import hexlet.code.schemas.Schema;
 import hexlet.code.schemas.StringSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,6 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,7 +89,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testMapSchema() {
+    public void testMapSchemaBasic() {
         var v = new Validator();
 
         var schema = v.map();
@@ -107,6 +109,35 @@ public class ValidatorTest {
         assertFalse(schema.isValid(data));  // false
         data.put("key2", "value2");
         assertTrue(schema.isValid(data)); // true
+    }
+
+    @Test
+    public void testMapSchemaFinal() {
+        var v = new Validator();
+
+        var schema = v.map();
+        Map<String, Schema<String>> schemas = new HashMap<>();
+
+        schemas.put("firstName", v.string().required());
+
+        schemas.put("lastName", v.string().required().minLength(2));
+
+        schema.shape(schemas);
+
+        Map<String, String> human1 = new HashMap<>();
+        human1.put("firstName", "John");
+        human1.put("lastName", "Smith");
+        assertTrue(schema.isValid(human1)); // true
+
+        Map<String, String> human2 = new HashMap<>();
+        human2.put("firstName", "John");
+        human2.put("lastName", null);
+        assertFalse(schema.isValid(human2)); // false
+
+        Map<String, String> human3 = new HashMap<>();
+        human3.put("firstName", "Anna");
+        human3.put("lastName", "B");
+        assertFalse(schema.isValid(human3)); // false
     }
 
     private static Stream<Arguments> forNullConfigStringSchema() {

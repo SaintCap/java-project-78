@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-enum SchemaChecks {
+public enum SchemaChecks {
     REQUIRED,
     MIN_LENGTH,
     CONTAINS,
