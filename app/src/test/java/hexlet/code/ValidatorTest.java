@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,13 +45,44 @@ public class ValidatorTest {
     @ParameterizedTest
     @MethodSource("basicConfigStringSchema")
     public void testStringSchemaNotValid(StringSchema schema) {
+        assertFalse(schema.isValid(null));
         assertFalse(schema.isValid("Jo pa"));
+        assertFalse(schema.isValid("Jo pa pa"));
+    }
+
+    @Test
+    public void testNumberSchemaBuild() {
+        var min = 5;
+        var max = 10;
+        var schema = new NumberSchema();
+
+        schema.required()
+                .positive()
+                .range(min, max);
+
+        var checks = schema.getChecks();
+        assertNotNull(checks);
+        assertEquals(3, checks.size());
     }
 
     @ParameterizedTest
-    @MethodSource("basicConfigStringSchema")
-    public void testStringSchemaNotValidNull(StringSchema schema) {
+    @MethodSource("forNullConfigNumberSchema")
+    public void testNumberSchemaValidNull(NumberSchema schema) {
+        assertTrue(schema.isValid(null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("basicConfigNumberSchema")
+    public void testNumberSchemaValid(NumberSchema schema) {
+        assertTrue(schema.isValid(6));
+    }
+
+    @ParameterizedTest
+    @MethodSource("basicConfigNumberSchema")
+    public void testNumberSchemaNotValid(NumberSchema schema) {
         assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid(11));
+        assertFalse(schema.isValid(-1));
     }
 
     private static Stream<Arguments> forNullConfigStringSchema() {
@@ -75,4 +107,32 @@ public class ValidatorTest {
                 )
         );
     }
+
+    private static Stream<Arguments> forNullConfigNumberSchema() {
+        var schema = new NumberSchema();
+        var schema2 = new NumberSchema();
+        schema2.positive();
+        return Stream.of(
+                Arguments.of(schema
+                ),
+                Arguments.of(schema2
+                )
+        );
+    }
+
+    private static Stream<Arguments> basicConfigNumberSchema() {
+        var min = 5;
+        var max = 10;
+        var schema = new NumberSchema();
+
+        schema.required()
+                .positive()
+                .range(min, max);
+
+        return Stream.of(
+                Arguments.of(schema
+                )
+        );
+    }
+
 }
