@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor
 @Getter
-public class MapSchema implements BaseSchema<Map<String, String>> {
+public final class MapSchema implements BaseSchema<Map<String, String>> {
     private final LinkedHashMap<SchemaChecks, Predicate<Map<String, String>>> checks = new LinkedHashMap<>();
     private Map<String, BaseSchema<String>> schemas = new HashMap<>();
 
@@ -31,8 +31,7 @@ public class MapSchema implements BaseSchema<Map<String, String>> {
                                           return true;
                                       }
                                       return schemas.get(k).isValid(value.get(k));
-                                  }
-                          );   
+                          });
         }
         return result;
     }
@@ -47,8 +46,8 @@ public class MapSchema implements BaseSchema<Map<String, String>> {
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema<String>> schemas) {
-        this.schemas = new HashMap<>(schemas);
+    public MapSchema shape(Map<String, BaseSchema<String>> newSchemas) {
+        this.schemas = new HashMap<>(newSchemas);
         return this;
     }
 

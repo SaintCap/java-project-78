@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor
 @Getter
-public class NumberSchema implements BaseSchema<Integer> {
+public final class NumberSchema implements BaseSchema<Integer> {
     private final LinkedHashMap<SchemaChecks, Predicate<Integer>> checks = new LinkedHashMap<>();
     private boolean isRequired = false;
 

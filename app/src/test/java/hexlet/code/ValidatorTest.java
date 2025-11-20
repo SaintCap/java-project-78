@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ValidatorTest {
+public final  class ValidatorTest {
     @Test
     public void testStringSchemaBuild() {
         var min = 5;
