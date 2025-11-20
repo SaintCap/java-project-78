@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor
 @Getter
-public class StringSchema implements Schema<String> {
+public class StringSchema implements BaseSchema<String> {
     private final LinkedHashMap<SchemaChecks, Predicate<String>> checks = new LinkedHashMap<>();
 
     @Override

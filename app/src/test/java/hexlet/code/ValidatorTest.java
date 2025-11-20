@@ -1,7 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.schemas.NumberSchema;
-import hexlet.code.schemas.Schema;
+import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.StringSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -116,7 +116,7 @@ public class ValidatorTest {
         var v = new Validator();
 
         var schema = v.map();
-        Map<String, Schema<String>> schemas = new HashMap<>();
+        Map<String, BaseSchema<String>> schemas = new HashMap<>();
 
         schemas.put("firstName", v.string().required());
 

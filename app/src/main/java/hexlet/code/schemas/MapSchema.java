@@ -11,9 +11,9 @@ import java.util.function.Predicate;
 
 @NoArgsConstructor
 @Getter
-public class MapSchema implements Schema<Map<String, String>> {
+public class MapSchema implements BaseSchema<Map<String, String>> {
     private final LinkedHashMap<SchemaChecks, Predicate<Map<String, String>>> checks = new LinkedHashMap<>();
-    private Map<String, Schema<String>> schemas = new HashMap<>();
+    private Map<String, BaseSchema<String>> schemas = new HashMap<>();
 
     @Override
     public void addCheck(SchemaChecks checkName, Predicate<Map<String, String>> predicate) {
@@ -47,7 +47,7 @@ public class MapSchema implements Schema<Map<String, String>> {
         return this;
     }
 
-    public MapSchema shape(Map<String, Schema<String>> schemas) {
+    public MapSchema shape(Map<String, BaseSchema<String>> schemas) {
         this.schemas = new HashMap<>(schemas);
         return this;
     }
