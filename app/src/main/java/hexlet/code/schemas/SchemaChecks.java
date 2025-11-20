@@ -5,5 +5,6 @@ enum SchemaChecks {
     MIN_LENGTH,
     CONTAINS,
     POSITIVE,
-    RANGE
+    RANGE,
+    SIZE
 }

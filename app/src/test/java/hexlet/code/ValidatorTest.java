@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,6 +84,29 @@ public class ValidatorTest {
         assertFalse(schema.isValid(null));
         assertFalse(schema.isValid(11));
         assertFalse(schema.isValid(-1));
+    }
+
+    @Test
+    public void testMapSchema() {
+        var v = new Validator();
+
+        var schema = v.map();
+
+        assertTrue(schema.isValid(null)); // true
+
+        schema.required();
+
+        assertFalse(schema.isValid(null)); // false
+        assertTrue(schema.isValid(new HashMap<>())); // true
+        var data = new HashMap<String, String>();
+        data.put("key1", "value1");
+        assertTrue(schema.isValid(data)); // true
+
+        schema.sizeof(2);
+
+        assertFalse(schema.isValid(data));  // false
+        data.put("key2", "value2");
+        assertTrue(schema.isValid(data)); // true
     }
 
     private static Stream<Arguments> forNullConfigStringSchema() {
