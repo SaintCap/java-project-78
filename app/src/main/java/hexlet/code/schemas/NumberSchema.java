@@ -1,31 +1,17 @@
 package hexlet.code.schemas;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 @NoArgsConstructor
-@Getter
-public final class NumberSchema implements BaseSchema<Integer> {
-    private final LinkedHashMap<SchemaChecks, Predicate<Integer>> checks = new LinkedHashMap<>();
+public final class NumberSchema extends BaseSchema<Integer> {
     private boolean isRequired = false;
 
     @Override
-    public void addCheck(SchemaChecks checkName, Predicate<Integer> predicate) {
-        checks.put(checkName, predicate);
-    }
-
-    @Override
-    public boolean isValid(Integer value) {
-        return checks.values().stream().allMatch(predicate -> predicate.test(value));
-    }
-
     public NumberSchema required() {
         this.isRequired = true;
-        addCheck(SchemaChecks.REQUIRED, Objects::nonNull);
+        addCheckFirst(SchemaChecks.REQUIRED, Objects::nonNull);
         return this;
     }
 

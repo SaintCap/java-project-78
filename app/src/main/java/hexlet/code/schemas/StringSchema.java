@@ -1,28 +1,13 @@
 package hexlet.code.schemas;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.function.Predicate;
-
 @NoArgsConstructor
-@Getter
-public final class StringSchema implements BaseSchema<String> {
-    private final LinkedHashMap<SchemaChecks, Predicate<String>> checks = new LinkedHashMap<>();
+public final class StringSchema extends BaseSchema<String> {
 
     @Override
-    public void addCheck(SchemaChecks checkName, Predicate<String> predicate) {
-        checks.put(checkName, predicate);
-    }
-
-    @Override
-    public boolean isValid(String value) {
-        return checks.values().stream().allMatch(predicate -> predicate.test(value));
-    }
-
     public StringSchema required() {
-        addCheck(SchemaChecks.REQUIRED, s -> s != null && !s.isEmpty());
+        addCheckFirst(SchemaChecks.REQUIRED, s -> s != null && !s.isEmpty());
         return this;
     }
 

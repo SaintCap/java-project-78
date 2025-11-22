@@ -4,25 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 @NoArgsConstructor
 @Getter
-public final class MapSchema implements BaseSchema<Map<String, String>> {
-    private final LinkedHashMap<SchemaChecks, Predicate<Map<String, String>>> checks = new LinkedHashMap<>();
+public final class MapSchema extends BaseSchema<Map<String, String>> {
     private Map<String, BaseSchema<String>> schemas = new HashMap<>();
 
     @Override
-    public void addCheck(SchemaChecks checkName, Predicate<Map<String, String>> predicate) {
-        checks.put(checkName, predicate);
-    }
-
-    @Override
     public boolean isValid(Map<String, String> value) {
-        var result = checks.values().stream().allMatch(predicate -> predicate.test(value));
+        var result = super.isValid(value);
         if (result && !schemas.isEmpty()) {
             result = value.keySet()
                           .stream()
@@ -36,8 +28,9 @@ public final class MapSchema implements BaseSchema<Map<String, String>> {
         return result;
     }
 
+    @Override
     public MapSchema required() {
-        addCheck(SchemaChecks.REQUIRED, Objects::nonNull);
+        addCheckFirst(SchemaChecks.REQUIRED, Objects::nonNull);
         return this;
     }
 
